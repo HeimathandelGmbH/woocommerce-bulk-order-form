@@ -130,6 +130,8 @@ class WCBulkOrderForm_Prefilled_Template {
 		$items = '';
 		$cart_url = $woocommerce->cart->get_cart_url();
 		
+
+		
 		if (!empty($_POST['wcbulkorderid'])) {
 			$quantity_check = array_filter($_POST['wcbulkorderquantity']);
 			if (empty($quantity_check)){
@@ -169,13 +171,56 @@ class WCBulkOrderForm_Prefilled_Template {
 					<th class="wcbulkorder-title">$product_label</th>
 					<th class="wcbulkorder-quantity">$quantity_label</th>
 HTML;
-					if ($price == 'true'){
-						$html .= '<th class="wcbulkorderprice">'.$price_label.'</th>';
-					}
 				$html .= '</tr>';
-			while($i < $rows) {
+
+			
+			// Define tags to load
+			$tags = array('bulk');
+			
+			// Define Query Arguments
+			$args = array( 
+						'post_type' 	 => 'product', 
+						'posts_per_page' => 0, 
+						'product_tag' 	 => $tags 
+						);
+			
+			global $post;
+			$myposts = get_posts( $args );
+			foreach( $myposts as $post ) :  
+				setup_postdata($post);
+				
+				$product_id = get_the_ID();
+				$product = new WC_Product( $product_id );
+				
+				$product_title = $product->get_title();
+				$product_price = $product->get_price();
+				$product_sku = $product->get_sku();
+
+
+				$html.= <<<HTML2
+				<tr class="wcbulkorderformtr">
+				
+				<td class="wcbulkorder-title">
+					<i class="bulkorder_spinner"></i>
+					<input type="text" name="wcbulkorderproduct[]" class="wcbulkorderproduct" value='$product_sku - $product_title'/>
+				</td>
+				<td class="wcbulkorder-quantity">
+					<input type="number" name="wcbulkorderquantity[]" class="wcbulkorderquantity" />
+				</td>
+HTML2;
+				$html .= <<<HTML7
+				<input type="hidden" name="wcbulkorderid[]" class="wcbulkorderid" value="$product_id" />
+
+			</tr>
+HTML7;
+				
+				
+			endforeach; 
+			wp_reset_postdata();
+			
+						while($i < $rows) {
 				++$i;
-				$html .= <<<HTML2
+				$html .= <<<HTML11
 				<tr class="wcbulkorderformtr">
 					<td class="wcbulkorder-title">
 						<i class="bulkorder_spinner"></i>
@@ -184,54 +229,22 @@ HTML;
 					<td class="wcbulkorder-quantity">
 						<input type="number" name="wcbulkorderquantity[]" class="wcbulkorderquantity" />
 					</td>
-HTML2;
-					if($price == 'true'){
-					$html .= '<td class="wcbulkorderprice"></td>';
-					}
-					$html .= <<<HTML7
+HTML11;
+					$html .= <<<HTML12
 					<input type="hidden" name="wcbulkorderid[]" class="wcbulkorderid" value="" />
 				</tr>
-HTML7;
+HTML12;
 			}
-		$html .= <<<HTML3
+			
+			
+		$html .= '<tr>';
+					$html .= '<td class="wcbulkorder-title"></td>';
+					$html .='<td class="wcbulkorder-quantity"><input type="submit" value="'.__( 'Add To Cart' , 'wcbulkorderform' ).'" name="submit" id="add_to_cart_button" /></td>';
+					$html .= <<<HTML5
+									</tr>
 			</tbody>
 		</table>	
-		<table class="wcbulkorderformtable">
-			<tbody>
-HTML3;
-				if ($price == 'true'){
-				$html .= <<<HTML4
-				<tr class="wcbulkorderformtr">
-					<td class="wcbulkorder-title"></td>
-					<td class="wcbulkorder-quantity"></td>
-					<td class="wcbulkorder-quantity">
-HTML4;
-						$html .= __( 'Total Price:' , 'wcbulkorderform' );
-					$html .= <<<HTML6
-					</td>
-					
-					<td class="wcbulkorderpricetotal"></td>
-					
-				</tr>
-HTML6;
-				}
-				$html .= '<tr>';
-					$html .= '<td class="wcbulkorder-title"></td>';
-					$html .= '<td class="wcbulkorder-quantity"></td>';
-					$html .= '<td class="wcbulkorder-quantity">';
-						if (($add_rows == 'true') && ($price == 'true')){
-						$html .='<button class="wcbulkordernewrowprice">'.__( 'Add Row' , 'wcbulkorderform' ).'</button>';
-						}
-						elseif (($add_rows == 'true') && ($price != 'true')) {
-						$html .='<button class="wcbulkordernewrow">'.__( 'Add Row' , 'wcbulkorderform' ).'</button>';
-						}
-					
-					$html .='</td>';
-					$html .='<td class="wcbulkorder-quantity"><input type="submit" value="'.__( 'Add To Cart' , 'wcbulkorderform' ).'" name="submit" /></td>';
-					$html .= <<<HTML5
-				</tr>
-			</tbody>
-		</table>
+
 		</form>
 HTML5;
 		return $html;

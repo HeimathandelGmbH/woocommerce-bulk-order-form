@@ -32,7 +32,7 @@ jQuery(document).ready(function ($){
 				var initial = 0;
 				$displayPrice.html('<span class="amount">'+ui.item.price+'</span>');
 				$displayPrice.find('span').text(ui.item.price.replace($price,initial.toFixed(2)));
-				$quantityInput.off('keyup').on('keyup', function() {
+				$quantityInput.on('change', function() {
 					$this = $(this);
 					if ($quantityInput.val() > 0) {
 						var total = parseInt($quantityInput.val()) * $calcprice;

@@ -58,3 +58,6 @@ tr.wcbulkorderformtr td{
 table.wcbulkorderformtable{
 	width:100%;
 }
+input#add_to_cart_button {
+	float:right;
+}

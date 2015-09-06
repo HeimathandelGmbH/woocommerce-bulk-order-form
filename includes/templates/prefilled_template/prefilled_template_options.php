@@ -169,23 +169,6 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 			)
 		);
 		
-		// show price? Yes/no
-		add_settings_field(
-			'display_price',
-			__( 'Display price on bulk order form?', 'wcbulkorderform' ),
-			array( &$this, 'radio_element_callback' ),
-			$option,
-			'advanced_settings',
-			array(
-				'menu'			=> $option,
-				'id'			=> 'display_price',
-				'options' 		=> array(
-					'true'			=> __( 'Yes' , 'wcbulkorderform' ),
-					'false'			=> __( 'No' , 'wcbulkorderform' )
-				),
-			)
-		);
-		
 		// Title to display for product title column
 		add_settings_field(
 			'product_field_title',
@@ -209,19 +192,6 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 			array(
 				'menu'			=> $option,
 				'id'			=> 'quantity_field_title'
-			)
-		);
-		
-		// Title to display for price column
-		add_settings_field(
-			'price_field_title',
-			__( 'Title for price fields', 'wcbulkorderform' ),
-			array( &$this, 'text_element_callback' ),
-			$option,
-			'advanced_settings',
-			array(
-				'menu'			=> $option,
-				'id'			=> 'price_field_title'
 			)
 		);
 
@@ -269,10 +239,8 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 			'new_row_button'				=> 'false',
 			'bulkorder_row_number'			=> '5',
 			'max_items'						=> '20',
-			'display_price'					=> 'true',
 			'product_field_title'			=> 'Product',
 			'quantity_field_title'			=> 'Quantity',
-			'price_field_title'				=> 'Price',
 			'no_load_css'					=> '',
 			'display_images'				=> 'false',
 			'attribute_style'				=> 'true',
