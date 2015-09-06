@@ -1,6 +1,6 @@
 <?php
 
-class WCBulkOrderForm_Settings_Standard_Template {
+class WCBulkOrderForm_Settings_Prefilled_Template {
 	
 	public function __construct() {
 		add_action( 'admin_init', array( &$this, 'init_settings' ) ); // Registers settings
@@ -11,9 +11,9 @@ class WCBulkOrderForm_Settings_Standard_Template {
 	 * Print Settings
 	 */
 	public function print_settings(){
-		settings_fields( 'wcbulkorderform_standard_template' );
-		do_settings_sections( 'wcbulkorderform_standard_template' );
-		$option = get_option('wcbulkorderform_standard_template');
+		settings_fields( 'wcbulkorderform_prefilled_template' );
+		do_settings_sections( 'wcbulkorderform_prefilled_template' );
+		$option = get_option('wcbulkorderform_prefilled_template');
 		//print_r($option);
 	}
 
@@ -21,7 +21,7 @@ class WCBulkOrderForm_Settings_Standard_Template {
 	 * User settings.
 	 */
 	public function init_settings() {
-		$option = 'wcbulkorderform_standard_template';
+		$option = 'wcbulkorderform_prefilled_template';
 	
 		// Create option in wp_options.
 		if ( false == get_option( $option ) ) {
@@ -282,7 +282,7 @@ class WCBulkOrderForm_Settings_Standard_Template {
 			'send_to_cart_or_checkout'		=> 'cart'
 		);
 		
-		update_option( 'wcbulkorderform_standard_template', $default );
+		update_option( 'wcbulkorderform_prefilled_template', $default );
 	}
 
 	/**

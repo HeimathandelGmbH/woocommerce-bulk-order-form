@@ -51,6 +51,10 @@ class WCBulkOrderForm {
 			include_once( 'includes/templates/variation_template/variation_search_template.php' );
 		    $WCBulkOrderForm_Variation_Template = new WCBulkOrderForm_Variation_Template();
 		}
+		if($template === 'Prefilled'){
+			include_once( 'includes/templates/prefilled_template/prefilled_template.php' );
+		    $WCBulkOrderForm_Prefilled_Template = new WCBulkOrderForm_Prefilled_Template();
+		}
 		
 		include_once( 'includes/wcbulkorder-settings.php' );
 		include_once( 'includes/wc-bulk-order-form-compatibility.php' );
@@ -77,6 +81,9 @@ class WCBulkOrderForm {
 		}
 		if(!in_array('Standard',$sections['templates'])){
 			$sections['templates'][] = 'Standard';
+		}
+		if(!in_array('Prefilled',$sections['templates'])){
+			$sections['templates'][] = 'Prefilled';
 		}
 		update_option('wcbulkorderform_sections',$sections);
 	}

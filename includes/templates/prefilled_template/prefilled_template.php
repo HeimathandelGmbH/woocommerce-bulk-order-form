@@ -3,7 +3,7 @@
  * Original Template Bulk Order Form Pro
  */
 
-class WCBulkOrderForm_Standard_Template {
+class WCBulkOrderForm_Prefilled_Template {
 
 	private static $add_script;
 	/**
@@ -11,13 +11,13 @@ class WCBulkOrderForm_Standard_Template {
 	 */
 	public function __construct() {
 		$this->includes();
-		$this->options = get_option('wcbulkorderform_standard_template');
+		$this->options = get_option('wcbulkorderform_prefilled_template');
 		//print_r($this->options);
 		if(empty($this->options)) {
-			register_activation_hook( __FILE__, array( 'WCBulkOrderForm_Settings_Standard_Template', 'default_settings' ) );
-			$this->options = get_option('wcbulkorderform_standard_template');
+			register_activation_hook( __FILE__, array( 'WCBulkOrderForm_Settings_Prefilled_Template', 'default_settings' ) );
+			$this->options = get_option('wcbulkorderform_prefilled_template');
 		}
-		$standard_template_settings = new WCBulkOrderForm_Settings_Standard_Template();
+		$standard_template_settings = new WCBulkOrderForm_Settings_Prefilled_Template();
 		
 		add_shortcode('wcbulkorder', array( &$this, 'wc_bulk_order_form' ) );
 		
@@ -34,7 +34,7 @@ class WCBulkOrderForm_Standard_Template {
 	 * Load additional classes and functions
 	 */
 	public function includes() {
-		include_once( 'standard_template_options.php' );
+		include_once( 'prefilled_template_options.php' );
 	}
 	
 	/**
@@ -60,7 +60,7 @@ class WCBulkOrderForm_Standard_Template {
 	 * Load JS
 	 */   
 	static function register_script() {
-		$options = get_option('wcbulkorderform_standard_template');
+		$options = get_option('wcbulkorderform_prefilled_template');
 		wp_register_script('wcbulkorder_acsearch', plugins_url( '/js/wcbulkorder_acsearch.js' , __FILE__ ), array('jquery','jquery-ui-autocomplete'),null,true);
 		$display_images = isset($options['display_images']) ? $options['display_images'] : '';
 		$noproductsfound = __( 'No Products Were Found', 'wcbulkorderform' );
