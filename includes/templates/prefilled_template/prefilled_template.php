@@ -6,6 +6,7 @@
 class WCBulkOrderForm_Prefilled_Template {
 
 	private static $add_script;
+	private static $enterquantity;
 	/**
 	 * Construct.
 	 */
@@ -66,13 +67,13 @@ class WCBulkOrderForm_Prefilled_Template {
 		$noproductsfound = __( 'No Products Were Found', 'wcbulkorderform' );
 		$variation_noproductsfound = __( 'No Variations', 'wcbulkorderform' );
 		$selectaproduct = __( 'Please Select a Product', 'wcbulkorderform' );
-		$enterquantity = __( 'Enter Quantity', 'wcbulkorderform' );
+		self::$enterquantity = __( 'Enter Quantity', 'wcbulkorderform' );
 		$decimal_sep = wp_specialchars_decode( stripslashes( get_option( 'woocommerce_price_decimal_sep' ) ), ENT_QUOTES );
 		$thousands_sep = wp_specialchars_decode( stripslashes( get_option( 'woocommerce_price_thousand_sep' ) ), ENT_QUOTES );
 		$num_decimals = absint( get_option( 'woocommerce_price_num_decimals' ) );
 		$minLength = 2;
 		$Delay = 500;
-		wp_localize_script( 'wcbulkorder_acsearch', 'WCBulkOrder', array('url' => admin_url( 'admin-ajax.php' ), 'search_products_nonce' => wp_create_nonce('wcbulkorder-search-products'), 'display_images' => $display_images, 'noproductsfound' => $noproductsfound, 'selectaproduct' => $selectaproduct, 'enterquantity' => $enterquantity, 'variation_noproductsfound' => $variation_noproductsfound,'variation_noproductsfound' => $variation_noproductsfound, 'decimal_sep' => $decimal_sep, 'thousands_sep' => $thousands_sep, 'num_decimals' => $num_decimals, 'Delay' => $Delay, 'minLength' => $minLength ));
+		wp_localize_script( 'wcbulkorder_acsearch', 'WCBulkOrder', array('url' => admin_url( 'admin-ajax.php' ), 'search_products_nonce' => wp_create_nonce('wcbulkorder-search-products'), 'display_images' => $display_images, 'noproductsfound' => $noproductsfound, 'selectaproduct' => $selectaproduct, 'enterquantity' => self::$enterquantity, 'variation_noproductsfound' => $variation_noproductsfound,'variation_noproductsfound' => $variation_noproductsfound, 'decimal_sep' => $decimal_sep, 'thousands_sep' => $thousands_sep, 'num_decimals' => $num_decimals, 'Delay' => $Delay, 'minLength' => $minLength ));
 	}
 
 	static function print_script() {
@@ -196,6 +197,7 @@ HTML;
 				$product_price = $product->get_price();
 				$product_sku = $product->get_sku();
 
+				$quantity_placeholder = self::$enterquantity;
 
 				$html.= <<<HTML2
 				<tr class="wcbulkorderformtr">
@@ -205,7 +207,7 @@ HTML;
 					<input type="text" name="wcbulkorderproduct[]" class="wcbulkorderproduct" value='$product_sku - $product_title'/>
 				</td>
 				<td class="wcbulkorder-quantity">
-					<input type="number" name="wcbulkorderquantity[]" class="wcbulkorderquantity" />
+					<input name="wcbulkorderquantity[]" class="wcbulkorderquantity" placeholder='$quantity_placeholder' onfocus="this.type='number';"/>
 				</td>
 HTML2;
 				$html .= <<<HTML7
@@ -659,35 +661,38 @@ HTML5;
 				$suggestion = array();
 				$switch_data = isset($this->options['search_format']) ? $this->options['search_format'] : '1';
 				$price = apply_filters('wc_bulk_order_form_price' , $price, $product);
-					switch ($switch_data) {
-						case 1:
-							if (!empty($sku)) {
-								$label = $sku.' - '.$title. ' - '.$price;
-							} else {
-								$label = $title. ' - '.$price;
-							}
-							break;
-						case 2:
-							if (!empty($sku)) {
-								$label = $title. ' - '.$price.' - '.$sku;
-							} else {
-								$label = $title. ' - '.$price;
-							}
-							break;
-						case 3:
-							$label = $title .' - '.$price;
-							break;
-						case 4:
-							if (!empty($sku)) {
-								$label = $title. ' - '.$sku;
-							} else {
-								$label = $title;
-							}
-							break;
-						case 5:
-							$label = $title;
-							break;
-					}
+					// switch ($switch_data) {
+						// case 1:
+							// if (!empty($sku)) {
+								// $label = $sku.' - '.$title. ' - '.$price;
+							// } else {
+								// $label = $title. ' - '.$price;
+							// }
+							// break;
+						// case 2:
+							// if (!empty($sku)) {
+								// $label = $title. ' - '.$price.' - '.$sku;
+							// } else {
+								// $label = $title. ' - '.$price;
+							// }
+							// break;
+						// case 3:
+							// $label = $title .' - '.$price;
+							// break;
+						// case 4:
+							// if (!empty($sku)) {
+								// $label = $title. ' - '.$sku;
+							// } else {
+								// $label = $title;
+							// }
+							// break;
+						// case 5:
+							// $label = $title;
+							// break;
+					// }
+					
+					$label = $sku.' - '.$title; 
+					
 				$suggestion['label'] = apply_filters('wc_bulk_order_form_label', $label, $price, $title, $sku, $symbol);
 				$suggestion['price'] = $price;
 				$suggestion['symbol'] = $symbol;
