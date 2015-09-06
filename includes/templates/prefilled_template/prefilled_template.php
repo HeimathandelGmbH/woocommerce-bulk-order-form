@@ -207,7 +207,7 @@ HTML;
 					<input type="text" name="wcbulkorderproduct[]" class="wcbulkorderproduct" value='$product_sku - $product_title'/>
 				</td>
 				<td class="wcbulkorder-quantity">
-					<input name="wcbulkorderquantity[]" class="wcbulkorderquantity" placeholder='$quantity_placeholder' onfocus="this.type='number';"/>
+					<input name="wcbulkorderquantity[]" class="wcbulkorderquantity" placeholder='$quantity_placeholder' onmouseover="this.type='number'";  onfocus="this.type='number';"/>
 				</td>
 HTML2;
 				$html .= <<<HTML7
