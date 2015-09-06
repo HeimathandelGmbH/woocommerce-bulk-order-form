@@ -76,45 +76,45 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 		);
 		
 		// How should we display the search results?
-		add_settings_field(
-			'search_format',
-			__( 'Choose your product search results format', 'wcbulkorderform' ),
-			array( &$this, 'radio_element_callback' ),
-			$option,
-			'plugin_settings',
-			array(
-				'menu'			=> $option,
-				'id'			=> 'search_format',
-				'options' 		=> array(
-					'1'			=> __( 'SKU - Title - Price' , 'wcbulkorderform' ),
-					'2'			=> __( 'Title - Price - SKU' , 'wcbulkorderform' ),
-					'3'			=> __( 'Title - Price' , 'wcbulkorderform' ),
-					'4'			=> __( 'Title - SKU' , 'wcbulkorderform' ),
-					'5'				=> __( 'Title' , 'wcbulkorderform' )
-				),
-				'disabled'		=> true,
-				'default'		=> '2'
-			)
-		);
+		// add_settings_field(
+			// 'search_format',
+			// __( 'Choose your product search results format', 'wcbulkorderform' ),
+			// array( &$this, 'radio_element_callback' ),
+			// $option,
+			// 'plugin_settings',
+			// array(
+				// 'menu'			=> $option,
+				// 'id'			=> 'search_format',
+				// 'options' 		=> array(
+					// '1'			=> __( 'SKU - Title - Price' , 'wcbulkorderform' ),
+					// '2'			=> __( 'Title - Price - SKU' , 'wcbulkorderform' ),
+					// '3'			=> __( 'Title - Price' , 'wcbulkorderform' ),
+					// '4'			=> __( 'Title - SKU' , 'wcbulkorderform' ),
+					// '5'				=> __( 'Title' , 'wcbulkorderform' )
+				// ),
+				// 'disabled'		=> true,
+				// 'default'		=> '2'
+			// )
+		// );
 		
 		// Add row button? Yes/no
-		add_settings_field(
-			'new_row_button',
-			__( 'Display "Add New Row" Button?', 'wcbulkorderform' ),
-			array( &$this, 'radio_element_callback' ),
-			$option,
-			'plugin_settings',
-			array(
-				'menu'			=> $option,
-				'id'			=> 'new_row_button',
-				'options' 		=> array(
-					'true'		=> __( 'Yes' , 'wcbulkorderform' ),
-					'false'		=> __( 'No' , 'wcbulkorderform' )
-				),
-				'disabled'		=> true,
-				'default'		=> 'false'
-			)
-		);
+		// add_settings_field(
+			// 'new_row_button',
+			// __( 'Display "Add New Row" Button?', 'wcbulkorderform' ),
+			// array( &$this, 'radio_element_callback' ),
+			// $option,
+			// 'plugin_settings',
+			// array(
+				// 'menu'			=> $option,
+				// 'id'			=> 'new_row_button',
+				// 'options' 		=> array(
+					// 'true'		=> __( 'Yes' , 'wcbulkorderform' ),
+					// 'false'		=> __( 'No' , 'wcbulkorderform' )
+				// ),
+				// 'disabled'		=> true,
+				// 'default'		=> 'false'
+			// )
+		// );
 
 		// Display images in search? Yes/no
 		add_settings_field(
