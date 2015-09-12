@@ -46,7 +46,7 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 			'advanced_settings',
 			array(
 				'menu'			=> $option,
-				'id'			=> 'bulkorder_tag'
+				'id'			=> 'bulkorder_tags'
 			)
 		);
 
