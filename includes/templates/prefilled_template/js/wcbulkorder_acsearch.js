@@ -131,5 +131,27 @@ jQuery(document).ready(function ($){
 		autocomplete();
 		return false;
 	});
-	
+
+    // Capture keys in the bulk order form
+    $('.wcbulkorderformtable').keydown(function(e) {
+
+        // Check if we caught a tab and we're in the last quantity field; alternative: e.target === $('.wcbulkorderquantity').last()[0]
+        if( e.which == 9 && $(e.target).is($('.wcbulkorderquantity').last())) {
+
+            // Append a new row, just like the other rows...
+            $("tbody.wcbulkorderformtbody").append('<tr class="wcbulkorderformtr"><td class="wcbulkorder-title"><i class="bulkorder_spinner"></i><input type="text" name="wcbulkorderproduct[]" class="wcbulkorderproduct new_row" /></td><td class="wcbulkorder-quantity"><input type="number" name="wcbulkorderquantity[]" class="wcbulkorderquantity" /></td><input type="hidden" name="wcbulkorderid[]" class="wcbulkorderid" value="" /></tr>');
+
+            // Shifting focus and removing the focus for next line
+            $('.new_row').focus();
+            $('.new_row').removeClass('new_row');
+
+            // Do the magic autocomplete again
+            autocomplete();
+            return false;
+        }
+    });
+
+
 });
+
+
