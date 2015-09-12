@@ -27,6 +27,81 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 		if ( false == get_option( $option ) ) {
 			add_option( $option );
 		}
+
+
+		// Advanced options section.
+		add_settings_section(
+			'advanced_settings',
+			__( 'Default Shortcode Options', 'wcbulkorderform' ),
+			array( &$this, 'section_options_callback' ),
+			$option
+		);
+
+		// Number of rows
+		add_settings_field(
+			'bulkorder_row_number',
+			__( 'Number of rows to display on the bulk order form in addition to default products loaded', 'wcbulkorderform' ),
+			array( &$this, 'text_element_callback' ),
+			$option,
+			'advanced_settings',
+			array(
+				'menu'			=> $option,
+				'id'			=> 'bulkorder_row_number'
+			)
+		);
+
+		// maximum number of items to display in search
+		add_settings_field(
+			'max_items',
+			__( 'Maximum Items to Display in a Search', 'wcbulkorderform' ),
+			array( &$this, 'text_element_callback' ),
+			$option,
+			'advanced_settings',
+			array(
+				'menu'			=> $option,
+				'id'			=> 'max_items'
+			)
+		);
+
+		// Title to display for product title column
+		add_settings_field(
+			'product_field_title',
+			__( 'Title for product fields', 'wcbulkorderform' ),
+			array( &$this, 'text_element_callback' ),
+			$option,
+			'advanced_settings',
+			array(
+				'menu'			=> $option,
+				'id'			=> 'product_field_title'
+			)
+		);
+
+		// Title to display for quantity column
+		add_settings_field(
+			'quantity_field_title',
+			__( 'Title for quantity fields', 'wcbulkorderform' ),
+			array( &$this, 'text_element_callback' ),
+			$option,
+			'advanced_settings',
+			array(
+				'menu'			=> $option,
+				'id'			=> 'quantity_field_title'
+			)
+		);
+
+		// Turn off jquery ui styles? Not usually recommended
+		add_settings_field(
+			'no_load_css',
+			__( "Don't load jquery ui styles. (Don't check this unless you know your site is loading jquery ui styles from another source)", 'wpmenucart' ),
+			array( &$this, 'checkbox_element_callback' ),
+			$option,
+			'plugin_settings',
+			array(
+				'menu'			=> $option,
+				'id'			=> 'no_load_css',
+			)
+		);
+
 	
 		// Main plugin options section.
 		add_settings_section(
@@ -36,44 +111,44 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 			$option
 		);
 		
-		// Search by field
-		add_settings_field(
-			'search_by',
-			__( 'When searching for products search by:', 'wcbulkorderform' ),
-			array( &$this, 'radio_element_callback' ),
-			$option,
-			'plugin_settings',
-			array(
-				'menu'			=> $option,
-				'id'			=> 'search_by',
-				'options' 		=> array(
-					'1'			=> __( 'SKU' , 'wcbulkorderform' ),
-					'2'			=> __( 'ID' , 'wcbulkorderform' ),
-					'3'			=> __( 'Title' , 'wcbulkorderform' ),
-					'4'			=> __( 'All' , 'wcbulkorderform' )
-				),
-				'disabled'		=> true,
-				'default'		=> '4'
-			)
-		);
+//		// Search by field
+//		add_settings_field(
+//			'search_by',
+//			__( 'When searching for products search by:', 'wcbulkorderform' ),
+//			array( &$this, 'radio_element_callback' ),
+//			$option,
+//			'plugin_settings',
+//			array(
+//				'menu'			=> $option,
+//				'id'			=> 'search_by',
+//				'options' 		=> array(
+//					'1'			=> __( 'SKU' , 'wcbulkorderform' ),
+//					'2'			=> __( 'ID' , 'wcbulkorderform' ),
+//					'3'			=> __( 'Title' , 'wcbulkorderform' ),
+//					'4'			=> __( 'All' , 'wcbulkorderform' )
+//				),
+//				'disabled'		=> true,
+//				'default'		=> '4'
+//			)
+//		);
 
-		// How should we display attributes?
-		add_settings_field(
-			'attribute_style',
-			__( 'Display attribute title or just attribute value? Ex. (Color: Red) or (Red)', 'wcbulkorderform' ),
-			array( &$this, 'radio_element_callback' ),
-			$option,
-			'plugin_settings',
-			array(
-				'menu'			=> $option,
-				'id'			=> 'attribute_style',
-				'options' 		=> array(
-					'true'		=> __( 'Attribute value only (recommended)' , 'wcbulkorderform' ),
-					'false'		=> __( 'Attribute title and value' , 'wcbulkorderform' )
-				),
-				'default'		=> 'false'
-			)
-		);
+//		// How should we display attributes?
+//		add_settings_field(
+//			'attribute_style',
+//			__( 'Display attribute title or just attribute value? Ex. (Color: Red) or (Red)', 'wcbulkorderform' ),
+//			array( &$this, 'radio_element_callback' ),
+//			$option,
+//			'plugin_settings',
+//			array(
+//				'menu'			=> $option,
+//				'id'			=> 'attribute_style',
+//				'options' 		=> array(
+//					'true'		=> __( 'Attribute value only (recommended)' , 'wcbulkorderform' ),
+//					'false'		=> __( 'Attribute title and value' , 'wcbulkorderform' )
+//				),
+//				'default'		=> 'false'
+//			)
+//		);
 		
 		// How should we display the search results?
 		// add_settings_field(
@@ -116,7 +191,7 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 			// )
 		// );
 
-		// Display images in search? Yes/no
+/*		// Display images in search? Yes/no
 		add_settings_field(
 			'display_images',
 			__( 'Display product images in autocomplete search?', 'wcbulkorderform' ),
@@ -133,80 +208,9 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 				'disabled'		=> true,
 				'default'		=> 'false'
 			)
-		);
+		);*/
 		
-		// Advanced options section.
-		add_settings_section(
-			'advanced_settings',
-			__( 'Default Shortcode Options', 'wcbulkorderform' ),
-			array( &$this, 'section_options_callback' ),
-			$option
-		);
-		
-		// Number of rows
-		add_settings_field(
-			'bulkorder_row_number',
-			__( 'Number of rows to display on the bulk order form', 'wcbulkorderform' ),
-			array( &$this, 'text_element_callback' ),
-			$option,
-			'advanced_settings',
-			array(
-				'menu'			=> $option,
-				'id'			=> 'bulkorder_row_number'
-			)
-		);
 
-		// maximum number of items to display in search
-		add_settings_field(
-			'max_items',
-			__( 'Maximum Items to Display in a Search', 'wcbulkorderform' ),
-			array( &$this, 'text_element_callback' ),
-			$option,
-			'advanced_settings',
-			array(
-				'menu'			=> $option,
-				'id'			=> 'max_items'
-			)
-		);
-		
-		// Title to display for product title column
-		add_settings_field(
-			'product_field_title',
-			__( 'Title for product fields', 'wcbulkorderform' ),
-			array( &$this, 'text_element_callback' ),
-			$option,
-			'advanced_settings',
-			array(
-				'menu'			=> $option,
-				'id'			=> 'product_field_title'
-			)
-		);
-		
-		// Title to display for quantity column
-		add_settings_field(
-			'quantity_field_title',
-			__( 'Title for quantity fields', 'wcbulkorderform' ),
-			array( &$this, 'text_element_callback' ),
-			$option,
-			'advanced_settings',
-			array(
-				'menu'			=> $option,
-				'id'			=> 'quantity_field_title'
-			)
-		);
-
-		// Turn off jquery ui styles? Not usually recommended
-		add_settings_field(
-			'no_load_css',
-			__( "Don't load jquery ui styles. (Don't check this unless you know your site is loading jquery ui styles from another source)", 'wpmenucart' ),
-			array( &$this, 'checkbox_element_callback' ),
-			$option,
-			'plugin_settings',
-			array(
-				'menu'			=> $option,
-				'id'			=> 'no_load_css',
-			)
-		);
 
 		// Register settings.
 		register_setting( $option, $option, array( &$this, 'wcbulkorderform_options_validate' ) );
@@ -242,7 +246,7 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 			'product_field_title'			=> 'Product',
 			'quantity_field_title'			=> 'Quantity',
 			'no_load_css'					=> '',
-			'display_images'				=> 'false',
+			//'display_images'				=> 'false',
 			'attribute_style'				=> 'true',
 			'single_add_to_cart'			=> 'false',
 			'add_to_cart_success_message'	=> '{wcbo_pn} successfully added to cart.',
