@@ -61,10 +61,12 @@ class WCBulkOrderForm_Prefilled_Template {
 	 * Load JS
 	 */   
 	static function register_script() {
+		global $woocommerce;
 		$options = get_option('wcbulkorderform_prefilled_template');
 		wp_register_script('wcbulkorder_acsearch', plugins_url( '/js/wcbulkorder_acsearch.js' , __FILE__ ), array('jquery','jquery-ui-autocomplete'),null,true);
 		$display_images = isset($options['display_images']) ? $options['display_images'] : '';
 		$noproductsfound = __( 'No Products Were Found', 'wcbulkorderform' );
+		$send_to_cart_or_checkout = isset($options['send_to_cart_or_checkout']) ? $options['send_to_cart_or_checkout'] : '';
 		$variation_noproductsfound = __( 'No Variations', 'wcbulkorderform' );
 		$selectaproduct = __( 'Please Select a Product', 'wcbulkorderform' );
 		self::$enterquantity = __( 'Enter Quantity', 'wcbulkorderform' );
@@ -73,7 +75,14 @@ class WCBulkOrderForm_Prefilled_Template {
 		$num_decimals = absint( get_option( 'woocommerce_price_num_decimals' ) );
 		$minLength = 2;
 		$Delay = 500;
-		wp_localize_script( 'wcbulkorder_acsearch', 'WCBulkOrder', array('url' => admin_url( 'admin-ajax.php' ), 'search_products_nonce' => wp_create_nonce('wcbulkorder-search-products'), 'display_images' => $display_images, 'noproductsfound' => $noproductsfound, 'selectaproduct' => $selectaproduct, 'enterquantity' => self::$enterquantity, 'variation_noproductsfound' => $variation_noproductsfound,'variation_noproductsfound' => $variation_noproductsfound, 'decimal_sep' => $decimal_sep, 'thousands_sep' => $thousands_sep, 'num_decimals' => $num_decimals, 'Delay' => $Delay, 'minLength' => $minLength ));
+		if($send_to_cart_or_checkout == 'checkout'){
+			$checkouttext = __( 'Checkout' , 'woocommerce' );
+			$checkouturl = $woocommerce->cart->get_checkout_url();
+		} else {
+			$checkouttext = __( 'Cart' , 'woocommerce' );
+			$checkouturl = $woocommerce->cart->get_cart_url();
+		}
+		wp_localize_script( 'wcbulkorder_acsearch', 'WCBulkOrder', array('url' => admin_url( 'admin-ajax.php' ), 'search_products_nonce' => wp_create_nonce('wcbulkorder-search-products'), 'display_images' => $display_images, 'noproductsfound' => $noproductsfound, 'selectaproduct' => $selectaproduct, 'enterquantity' => self::$enterquantity, 'variation_noproductsfound' => $variation_noproductsfound,'variation_noproductsfound' => $variation_noproductsfound, 'decimal_sep' => $decimal_sep, 'thousands_sep' => $thousands_sep, 'num_decimals' => $num_decimals, 'Delay' => $Delay, 'minLength' => $minLength, 'checkouttext' => $checkouttext, 'checkouturl' => $checkouturl ));
 	}
 
 	static function print_script() {
@@ -235,20 +244,29 @@ HTML11;
 					$html .= <<<HTML12
 					<input type="hidden" name="wcbulkorderid[]" class="wcbulkorderid" value="" />
 				</tr>
-HTML12;
-			}
-			
-			
-		$html .= '<tr>';
-					$html .= '<td class="wcbulkorder-title"></td>';
-					$html .='<td class="wcbulkorder-quantity"><input type="submit" value="'.__( 'Add To Cart' , 'wcbulkorderform' ).'" name="submit" id="add_to_cart_button" /></td>';
-					$html .= <<<HTML5
-									</tr>
-			</tbody>
-		</table>	
 
-		</form>
-HTML5;
+HTML12;
+
+
+
+			}
+
+		$html .= '</tbody></table>';
+
+
+		if ($add_rows == 'true') {
+			$html .= '<tr><td class="wcbulkorder-title"></td><td class="wcbulkorder-quantity"><button class="wcbulkordernewrow">'.__( 'Add Row' , 'wcbulkorderform' ).'</button></td></tr>';
+		}
+
+
+
+
+
+
+		$html .= '<td class="wcbulkorder-title"></td>';
+					$html .='<td class="wcbulkorder-quantity"><input type="submit" value="'.__( 'Add To Cart' , 'wcbulkorderform' ).'" name="submit" id="add_to_cart_button" /></td></tr>';
+					$html .= '</form>';
+
 		return $html;
 		
 	}

@@ -263,7 +263,7 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 			'single_add_to_cart'			=> 'false',
 			'add_to_cart_success_message'	=> '{wcbo_pn} successfully added to cart.',
 			'add_to_cart_failure_message'	=> 'There was an error adding {wcbo_pn} to your cart.',
-			'send_to_cart_or_checkout'		=> 'cart'
+			'send_to_cart_or_checkout'		=> 'checkout'
 		);
 		
 		update_option( 'wcbulkorderform_prefilled_template', $default );
