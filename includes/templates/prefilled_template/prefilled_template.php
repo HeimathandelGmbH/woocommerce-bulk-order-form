@@ -176,7 +176,10 @@ HTML;
 
 			
 			// Define tags to load
-			$tags = array('bulk');
+			$tags = explode(",", $this->options['bulkorder_tags']);
+
+			echo $tags;
+			var_dump($tags);
 			
 			// Define Query Arguments
 			$args = array( 

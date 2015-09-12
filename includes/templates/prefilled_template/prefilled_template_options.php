@@ -39,6 +39,19 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 
 		// Number of rows
 		add_settings_field(
+			'bulkorder_tags',
+			__( 'Comma-separated tag(s) to select the default products to show in bulk order form', 'wcbulkorderform' ),
+			array( &$this, 'text_element_callback' ),
+			$option,
+			'advanced_settings',
+			array(
+				'menu'			=> $option,
+				'id'			=> 'bulkorder_tag'
+			)
+		);
+
+		// Number of rows
+		add_settings_field(
 			'bulkorder_row_number',
 			__( 'Number of rows to display on the bulk order form in addition to default products loaded', 'wcbulkorderform' ),
 			array( &$this, 'text_element_callback' ),
@@ -172,24 +185,22 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 			// )
 		// );
 		
-		// Add row button? Yes/no
-		// add_settings_field(
-			// 'new_row_button',
-			// __( 'Display "Add New Row" Button?', 'wcbulkorderform' ),
-			// array( &$this, 'radio_element_callback' ),
-			// $option,
-			// 'plugin_settings',
-			// array(
-				// 'menu'			=> $option,
-				// 'id'			=> 'new_row_button',
-				// 'options' 		=> array(
-					// 'true'		=> __( 'Yes' , 'wcbulkorderform' ),
-					// 'false'		=> __( 'No' , 'wcbulkorderform' )
-				// ),
-				// 'disabled'		=> true,
-				// 'default'		=> 'false'
-			// )
-		// );
+		 //Add row button? Yes/no
+		 add_settings_field(
+			 'new_row_button',
+			 __( 'Display "Add New Row" Button?', 'wcbulkorderform' ),
+			 array( &$this, 'radio_element_callback' ),
+			 $option,
+			 'plugin_settings',
+			 array(
+				 'menu'			=> $option,
+				 'id'			=> 'new_row_button',
+				 'options' 		=> array(
+					 'true'		=> __( 'Yes' , 'wcbulkorderform' ),
+					 'false'		=> __( 'No' , 'wcbulkorderform' )
+				 ),
+			 )
+		 );
 
 /*		// Display images in search? Yes/no
 		add_settings_field(
@@ -238,9 +249,10 @@ class WCBulkOrderForm_Settings_Prefilled_Template {
 	public function default_settings() {
 		global $options;
 		$default = array(
-			'search_by'						=> '4',
-			'search_format'					=> '2',
+			//'search_by'						=> '4',
+			//'search_format'					=> '2',
 			'new_row_button'				=> 'false',
+			'bulk_order_tags'               => 'bulk',
 			'bulkorder_row_number'			=> '5',
 			'max_items'						=> '20',
 			'product_field_title'			=> 'Product',
